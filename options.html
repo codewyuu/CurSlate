@@ -1,0 +1,809 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CurSlate Options</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Poppins:wght@500;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --primary: #6366F1;
+      --primary-hover: #4F46E5;
+      --neutral-50: #F9FAFB;
+      --neutral-100: #F3F4F6;
+      --neutral-200: #E5E7EB;
+      --neutral-300: #D1D5DB;
+      --neutral-500: #6B7280;
+      --neutral-600: #4B5563;
+      --neutral-700: #374151;
+      --neutral-800: #1F2937;
+      --neutral-900: #111827;
+      --radius: 0.5rem;
+    }
+    
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+      color: var(--neutral-800);
+      background-color: var(--neutral-50);
+      line-height: 1.5;
+      font-size: 14px;
+    }
+    
+    * {
+      box-sizing: border-box;
+    }
+    
+    .container {
+      max-width: 800px;
+      margin: 0 auto;
+      padding: 20px;
+    }
+    
+    .header {
+      display: flex;
+      align-items: center;
+      margin-bottom: 24px;
+    }
+    
+    .header-logo {
+      display: flex;
+      align-items: center;
+    }
+    
+    .header-logo svg {
+      height: 32px;
+      width: 32px;
+      color: var(--primary);
+    }
+    
+    .header-title {
+      font-family: 'Poppins', sans-serif;
+      font-weight: 600;
+      font-size: 24px;
+      margin-left: 12px;
+    }
+    
+    .card {
+      background-color: white;
+      border-radius: var(--radius);
+      box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
+      margin-bottom: 24px;
+    }
+    
+    .card-header {
+      padding: 16px 20px;
+      border-bottom: 1px solid var(--neutral-200);
+      font-family: 'Poppins', sans-serif;
+      font-weight: 600;
+      font-size: 16px;
+    }
+    
+    .card-body {
+      padding: 20px;
+    }
+    
+    .tab-container {
+      border-bottom: 1px solid var(--neutral-200);
+    }
+    
+    .tabs {
+      display: flex;
+      margin-bottom: -1px;
+    }
+    
+    .tab {
+      padding: 12px 20px;
+      cursor: pointer;
+      border-bottom: 2px solid transparent;
+      font-weight: 500;
+      font-size: 14px;
+    }
+    
+    .tab.active {
+      border-bottom-color: var(--primary);
+      color: var(--primary);
+    }
+    
+    .tab:hover:not(.active) {
+      border-bottom-color: var(--neutral-300);
+      color: var(--neutral-700);
+    }
+    
+    .tab-content {
+      display: none;
+      padding: 20px;
+    }
+    
+    .tab-content.active {
+      display: block;
+    }
+    
+    .form-group {
+      margin-bottom: 20px;
+    }
+    
+    .form-group:last-child {
+      margin-bottom: 0;
+    }
+    
+    .form-label {
+      display: block;
+      margin-bottom: 6px;
+      font-weight: 500;
+    }
+    
+    .form-description {
+      font-size: 12px;
+      color: var(--neutral-500);
+      margin-bottom: 8px;
+    }
+    
+    .form-select, .form-input {
+      width: 100%;
+      padding: 8px 12px;
+      border: 1px solid var(--neutral-300);
+      border-radius: 4px;
+      font-size: 14px;
+      color: var(--neutral-800);
+      background-color: white;
+      font-family: 'Inter', sans-serif;
+    }
+    
+    .form-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    
+    .switch-container {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 16px;
+    }
+    
+    .switch-label {
+      font-weight: 500;
+    }
+    
+    .switch-description {
+      font-size: 12px;
+      color: var(--neutral-500);
+      margin-top: 2px;
+    }
+    
+    .switch {
+      position: relative;
+      display: inline-block;
+      width: 46px;
+      height: 24px;
+    }
+    
+    .switch input {
+      opacity: 0;
+      width: 0;
+      height: 0;
+    }
+    
+    .slider {
+      position: absolute;
+      cursor: pointer;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background-color: var(--neutral-300);
+      transition: .4s;
+      border-radius: 24px;
+    }
+    
+    .slider:before {
+      position: absolute;
+      content: "";
+      height: 18px;
+      width: 18px;
+      left: 3px;
+      bottom: 3px;
+      background-color: white;
+      transition: .4s;
+      border-radius: 50%;
+    }
+    
+    input:checked + .slider {
+      background-color: var(--primary);
+    }
+    
+    input:checked + .slider:before {
+      transform: translateX(22px);
+    }
+    
+    .card-footer {
+      display: flex;
+      justify-content: flex-end;
+      padding: 16px 20px;
+      border-top: 1px solid var(--neutral-200);
+      background-color: var(--neutral-50);
+    }
+    
+    .btn {
+      padding: 8px 16px;
+      font-size: 14px;
+      font-weight: 500;
+      border-radius: 4px;
+      cursor: pointer;
+      transition: all 0.2s;
+      border: none;
+      font-family: 'Inter', sans-serif;
+    }
+    
+    .btn-primary {
+      background-color: var(--primary);
+      color: white;
+    }
+    
+    .btn-primary:hover {
+      background-color: var(--primary-hover);
+    }
+    
+    .btn-secondary {
+      background-color: var(--neutral-100);
+      color: var(--neutral-800);
+      border: 1px solid var(--neutral-300);
+      margin-right: 8px;
+    }
+    
+    .btn-secondary:hover {
+      background-color: var(--neutral-200);
+    }
+    
+    .checkbox-container {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 8px;
+      margin-top: 12px;
+    }
+    
+    .checkbox-item {
+      display: flex;
+      align-items: center;
+    }
+    
+    .checkbox-item input[type="checkbox"] {
+      margin-right: 8px;
+      width: 16px;
+      height: 16px;
+      accent-color: var(--primary);
+    }
+    
+    .range-container {
+      display: flex;
+      align-items: center;
+    }
+    
+    .range-input {
+      flex-grow: 1;
+      margin-right: 12px;
+    }
+    
+    .range-value {
+      min-width: 50px;
+    }
+    
+    .style-options {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 12px;
+      margin-top: 12px;
+    }
+    
+    .style-option {
+      border: 1px solid var(--neutral-300);
+      border-radius: 4px;
+      padding: 12px;
+      cursor: pointer;
+      position: relative;
+      background-color: var(--neutral-50);
+    }
+    
+    .style-option.selected {
+      border-color: var(--primary);
+    }
+    
+    .style-option.selected::after {
+      content: "";
+      position: absolute;
+      top: -6px;
+      right: -6px;
+      width: 18px;
+      height: 18px;
+      background-color: white;
+      border-radius: 50%;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20' fill='%236366F1'%3E%3Cpath fill-rule='evenodd' d='M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z' clip-rule='evenodd' /%3E%3C/svg%3E");
+      background-size: contain;
+    }
+    
+    .style-preview {
+      height: 100px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 8px;
+      background-color: white;
+      border: 1px solid var(--neutral-200);
+      border-radius: 4px;
+    }
+    
+    .style-name {
+      text-align: center;
+      font-size: 12px;
+      font-weight: 500;
+    }
+    
+    .font-options {
+      display: flex;
+      gap: 8px;
+      margin-top: 12px;
+    }
+    
+    .font-option {
+      padding: 8px 12px;
+      border: 1px solid var(--neutral-300);
+      border-radius: 4px;
+      cursor: pointer;
+      background-color: white;
+    }
+    
+    .font-option.selected {
+      border-color: var(--primary);
+      background-color: rgba(99, 102, 241, 0.1);
+      color: var(--primary);
+      font-weight: 500;
+    }
+    
+    .shortcut-container {
+      display: flex;
+      margin-top: 8px;
+    }
+    
+    .shortcut-display {
+      padding: 8px 12px;
+      background-color: white;
+      border: 1px solid var(--neutral-300);
+      border-radius: 4px;
+      min-width: 120px;
+      text-align: center;
+      font-family: monospace;
+    }
+    
+    .edit-button {
+      margin-left: 8px;
+      color: var(--primary);
+      font-size: 14px;
+      background: none;
+      border: none;
+      cursor: pointer;
+    }
+    
+    .edit-button:hover {
+      text-decoration: underline;
+    }
+    
+    .history-list {
+      max-height: 300px;
+      overflow-y: auto;
+      border: 1px solid var(--neutral-200);
+      border-radius: 4px;
+    }
+    
+    .history-item {
+      padding: 12px;
+      border-bottom: 1px solid var(--neutral-200);
+    }
+    
+    .history-item:last-child {
+      border-bottom: none;
+    }
+    
+    .history-languages {
+      font-size: 12px;
+      color: var(--neutral-500);
+      margin-bottom: 4px;
+    }
+    
+    .history-original {
+      font-size: 14px;
+      margin-bottom: 4px;
+    }
+    
+    .history-translation {
+      font-size: 14px;
+      font-weight: 500;
+    }
+    
+    .history-time {
+      font-size: 10px;
+      color: var(--neutral-500);
+      margin-top: 4px;
+    }
+    
+    .popup-preview-minimal {
+      display: inline-block;
+      background-color: white;
+      border: 1px solid var(--neutral-200);
+      border-radius: 4px;
+      padding: 8px 12px;
+      box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+    }
+    
+    .popup-preview-minimal .popup-header {
+      font-size: 10px;
+      color: var(--neutral-500);
+      margin-bottom: 4px;
+    }
+    
+    .popup-preview-minimal .popup-content {
+      font-size: 12px;
+    }
+    
+    .popup-preview-detailed {
+      display: inline-block;
+      background-color: white;
+      border: 1px solid var(--neutral-200);
+      border-radius: 4px;
+      padding: 12px 16px;
+      box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+    }
+    
+    .popup-preview-detailed .popup-header {
+      display: flex;
+      align-items: center;
+      font-size: 10px;
+      color: var(--neutral-500);
+      margin-bottom: 4px;
+    }
+    
+    .popup-preview-detailed .lang-indicator {
+      display: inline-block;
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background-color: var(--primary);
+      margin-right: 4px;
+    }
+    
+    .popup-preview-detailed .popup-content {
+      font-size: 12px;
+      margin-bottom: 4px;
+    }
+    
+    .popup-preview-detailed .popup-footer {
+      text-align: right;
+      font-size: 8px;
+      color: var(--neutral-500);
+    }
+    
+    .popup-preview-dark {
+      display: inline-block;
+      background-color: var(--neutral-800);
+      border: 1px solid var(--neutral-700);
+      border-radius: 4px;
+      padding: 8px 12px;
+      box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+    }
+    
+    .popup-preview-dark .popup-header {
+      font-size: 10px;
+      color: var(--neutral-400);
+      margin-bottom: 4px;
+    }
+    
+    .popup-preview-dark .popup-content {
+      font-size: 12px;
+      color: white;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="header">
+      <div class="header-logo">
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 15l-2 5L9 9l11 4-5 2zm0 0l5 5M7.188 2.239l.777 2.897M5.136 7.965l-2.898-.777M13.95 4.05l-2.122 2.122m-5.657 5.656l-2.12 2.122" />
+        </svg>
+        <span class="header-title">CurSlate Settings</span>
+      </div>
+    </div>
+    
+    <div class="card">
+      <div class="tab-container">
+        <div class="tabs">
+          <div class="tab active" data-tab="general">General</div>
+          <div class="tab" data-tab="language">Language</div>
+          <div class="tab" data-tab="appearance">Appearance</div>
+          <div class="tab" data-tab="shortcuts">Shortcuts</div>
+          <div class="tab" data-tab="history">History</div>
+        </div>
+      </div>
+      
+      <div id="general" class="tab-content active">
+        <div class="switch-container">
+          <div>
+            <div class="switch-label">Enable Translation</div>
+            <div class="switch-description">Turn on/off the cursor translation feature</div>
+          </div>
+          <label class="switch">
+            <input type="checkbox" id="is-active" checked>
+            <span class="slider"></span>
+          </label>
+        </div>
+        
+        <div class="switch-container">
+          <div>
+            <div class="switch-label">Auto-start with Browser</div>
+            <div class="switch-description">Activate CurSlate when your browser starts</div>
+          </div>
+          <label class="switch">
+            <input type="checkbox" id="auto-start">
+            <span class="slider"></span>
+          </label>
+        </div>
+        
+        <div class="switch-container">
+          <div>
+            <div class="switch-label">Translate on Hover</div>
+            <div class="switch-description">Automatically translate text when you hover over it</div>
+          </div>
+          <label class="switch">
+            <input type="checkbox" id="translate-on-hover" checked>
+            <span class="slider"></span>
+          </label>
+        </div>
+        
+        <div class="switch-container">
+          <div>
+            <div class="switch-label">Keyboard Shortcut Activation</div>
+            <div class="switch-description">Only translate when pressing a modifier key</div>
+          </div>
+          <label class="switch">
+            <input type="checkbox" id="keyboard-shortcut-activation">
+            <span class="slider"></span>
+          </label>
+        </div>
+        
+        <div class="form-group">
+          <label class="form-label" for="hover-delay-range">Hover Delay</label>
+          <div class="form-description">How long to wait before showing the translation (in milliseconds)</div>
+          <div class="range-container">
+            <input type="range" id="hover-delay-range" class="range-input" min="0" max="1000" step="50" value="300">
+            <span class="range-value" id="hover-delay-value">300ms</span>
+          </div>
+        </div>
+      </div>
+      
+      <div id="language" class="tab-content">
+        <div class="form-group">
+          <label class="form-label" for="target-language">Target Language</label>
+          <div class="form-description">Default language to translate text into</div>
+          <select class="form-select" id="target-language">
+            <option value="en">English</option>
+            <option value="es">Spanish (Español)</option>
+            <option value="fr">French (Français)</option>
+            <option value="de">German (Deutsch)</option>
+            <option value="it">Italian (Italiano)</option>
+            <option value="pt">Portuguese (Português)</option>
+            <option value="ru">Russian (Русский)</option>
+            <option value="zh">Chinese (中文)</option>
+            <option value="ja">Japanese (日本語)</option>
+            <option value="ko">Korean (한국어)</option>
+          </select>
+        </div>
+        
+        <div class="form-group">
+          <label class="form-label">Source Languages</label>
+          <div class="form-description">Languages to detect and translate from</div>
+          
+          <div class="switch-container" style="margin-bottom: 8px;">
+            <div class="switch-label">Auto-detect language (Recommended)</div>
+            <label class="switch">
+              <input type="checkbox" id="auto-detect-language" checked>
+              <span class="slider"></span>
+            </label>
+          </div>
+          
+          <div class="form-description">Or select specific languages to translate from:</div>
+          <div class="checkbox-container">
+            <div class="checkbox-item">
+              <input type="checkbox" id="lang-en" checked>
+              <label for="lang-en">English</label>
+            </div>
+            <div class="checkbox-item">
+              <input type="checkbox" id="lang-es" checked>
+              <label for="lang-es">Spanish</label>
+            </div>
+            <div class="checkbox-item">
+              <input type="checkbox" id="lang-fr" checked>
+              <label for="lang-fr">French</label>
+            </div>
+            <div class="checkbox-item">
+              <input type="checkbox" id="lang-de" checked>
+              <label for="lang-de">German</label>
+            </div>
+            <div class="checkbox-item">
+              <input type="checkbox" id="lang-zh" checked>
+              <label for="lang-zh">Chinese</label>
+            </div>
+            <div class="checkbox-item">
+              <input type="checkbox" id="lang-ru" checked>
+              <label for="lang-ru">Russian</label>
+            </div>
+          </div>
+        </div>
+        
+        <div class="form-group">
+          <label class="form-label" for="translation-provider">Translation Provider</label>
+          <div class="form-description">Service used for translations</div>
+          <select class="form-select" id="translation-provider">
+            <option value="google">Google Translate (Default)</option>
+            <option value="microsoft">Microsoft Translator</option>
+            <option value="deepl">DeepL</option>
+          </select>
+        </div>
+      </div>
+      
+      <div id="appearance" class="tab-content">
+        <div class="form-group">
+          <label class="form-label">Popup Style</label>
+          <div class="form-description">Customize how the translation popup appears</div>
+          
+          <div class="style-options">
+            <div class="style-option selected" data-style="minimal">
+              <div class="style-preview">
+                <div class="popup-preview-minimal">
+                  <div class="popup-header">French → English</div>
+                  <div class="popup-content">Hello world! How are you?</div>
+                </div>
+              </div>
+              <div class="style-name">Minimal</div>
+            </div>
+            
+            <div class="style-option" data-style="detailed">
+              <div class="style-preview">
+                <div class="popup-preview-detailed">
+                  <div class="popup-header">
+                    <span class="lang-indicator"></span>
+                    <span>French → English</span>
+                  </div>
+                  <div class="popup-content">Hello world! How are you?</div>
+                  <div class="popup-footer">Copy</div>
+                </div>
+              </div>
+              <div class="style-name">Detailed</div>
+            </div>
+            
+            <div class="style-option" data-style="dark">
+              <div class="style-preview">
+                <div class="popup-preview-dark">
+                  <div class="popup-header">French → English</div>
+                  <div class="popup-content">Hello world! How are you?</div>
+                </div>
+              </div>
+              <div class="style-name">Dark Mode</div>
+            </div>
+          </div>
+        </div>
+        
+        <div class="form-group">
+          <label class="form-label" for="popup-position">Popup Position</label>
+          <div class="form-description">Where to show the translation popup</div>
+          <select class="form-select" id="popup-position">
+            <option value="cursor">Follow Cursor</option>
+            <option value="above">Above Text</option>
+            <option value="below">Below Text</option>
+            <option value="fixed">Fixed Position (Bottom Right)</option>
+          </select>
+        </div>
+        
+        <div class="form-group">
+          <label class="form-label">Font Size</label>
+          <div class="form-description">Text size in the translation popup</div>
+          <div class="font-options">
+            <div class="font-option" data-size="small">Small</div>
+            <div class="font-option selected" data-size="medium">Medium</div>
+            <div class="font-option" data-size="large">Large</div>
+          </div>
+        </div>
+        
+        <div class="switch-container">
+          <div>
+            <div class="switch-label">Show Source Language</div>
+            <div class="switch-description">Display the detected source language in the popup</div>
+          </div>
+          <label class="switch">
+            <input type="checkbox" id="show-source-language" checked>
+            <span class="slider"></span>
+          </label>
+        </div>
+      </div>
+      
+      <div id="shortcuts" class="tab-content">
+        <div class="form-group">
+          <label class="form-label">Toggle Translation</label>
+          <div class="form-description">Enable or disable the translation feature</div>
+          <div class="shortcut-container">
+            <div class="shortcut-display" id="toggle-shortcut">Ctrl + Shift + T</div>
+            <button class="edit-button" id="edit-toggle-shortcut">Edit</button>
+          </div>
+        </div>
+        
+        <div class="form-group">
+          <label class="form-label">Copy Translation</label>
+          <div class="form-description">Copy the current translation to clipboard</div>
+          <div class="shortcut-container">
+            <div class="shortcut-display" id="copy-shortcut">Ctrl + C</div>
+            <button class="edit-button" id="edit-copy-shortcut">Edit</button>
+          </div>
+        </div>
+        
+        <div class="form-group">
+          <label class="form-label" for="activation-key">Activation Key</label>
+          <div class="form-description">Hold this key while hovering to show translations</div>
+          <select class="form-select" id="activation-key">
+            <option value="none">None (Always Active)</option>
+            <option value="alt">Alt Key</option>
+            <option value="ctrl">Ctrl Key</option>
+            <option value="shift">Shift Key</option>
+          </select>
+        </div>
+        
+        <div class="switch-container">
+          <div>
+            <div class="switch-label">Use System Notifications</div>
+            <div class="switch-description">Show desktop notifications when translation is toggled</div>
+          </div>
+          <label class="switch">
+            <input type="checkbox" id="use-system-notifications">
+            <span class="slider"></span>
+          </label>
+        </div>
+      </div>
+      
+      <div id="history" class="tab-content">
+        <div class="form-group">
+          <label class="form-label">Recent Translations</label>
+          <div id="history-list" class="history-list">
+            <!-- History items will be populated here -->
+            <div class="history-item">
+              <div class="history-languages">French → English</div>
+              <div class="history-original">Bonjour le monde! Comment allez-vous aujourd'hui?</div>
+              <div class="history-translation">Hello world! How are you today?</div>
+              <div class="history-time">Just now</div>
+            </div>
+          </div>
+        </div>
+        <div class="switch-container">
+          <div>
+            <div class="switch-label">Save Translation History</div>
+            <div class="switch-description">Keep a record of your translations</div>
+          </div>
+          <label class="switch">
+            <input type="checkbox" id="save-history" checked>
+            <span class="slider"></span>
+          </label>
+        </div>
+        <button class="btn btn-secondary" id="clear-history">Clear History</button>
+      </div>
+      
+      <div class="card-footer">
+        <button class="btn btn-secondary" id="reset-btn">Reset to Defaults</button>
+        <button class="btn btn-primary" id="save-btn">Save Settings</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="options.js"></script>
+</body>
+</html>

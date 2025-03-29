@@ -1,0 +1,2 @@
+/*! For license information please see vendor.toidentifier.bundle.js.LICENSE.txt */
+"use strict";(self.webpackChunk=self.webpackChunk||[]).push([[6403],{16963:e=>{e.exports=function(e){return e.split(" ").map((function(e){return e.slice(0,1).toUpperCase()+e.slice(1)})).join("").replace(/[^ _0-9a-z]/gi,"")}}}]);

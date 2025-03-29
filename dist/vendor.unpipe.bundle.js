@@ -1,0 +1,2 @@
+/*! For license information please see vendor.unpipe.bundle.js.LICENSE.txt */
+"use strict";(self.webpackChunk=self.webpackChunk||[]).push([[8444],{71170:e=>{e.exports=function(e){if(!e)throw new TypeError("argument stream is required");if("function"!=typeof e.unpipe){if(function(e){for(var n=e.listeners("data"),r=0;r<n.length;r++)if("ondata"===n[r].name)return!0;return!1}(e))for(var n,r=e.listeners("close"),t=0;t<r.length;t++)"cleanup"!==(n=r[t]).name&&"onclose"!==n.name||n.call(e)}else e.unpipe()}}}]);

@@ -1,0 +1,1 @@
+(self.webpackChunk=self.webpackChunk||[]).push([[6235],{55527:e=>{var t=function(){return this}(),n=t.WebSocket||t.MozWebSocket;function o(e,t,o){return t?new n(e,t):new n(e)}e.exports=n?o:null,n&&(o.prototype=n.prototype)}}]);

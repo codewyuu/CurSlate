@@ -1,0 +1,1 @@
+"use strict";(self.webpackChunk=self.webpackChunk||[]).push([[3516],{97270:t=>{t.exports=Object.setPrototypeOf||({__proto__:[]}instanceof Array?function(t,r){return t.__proto__=r,t}:function(t,r){for(var e in r)Object.prototype.hasOwnProperty.call(t,e)||(t[e]=r[e]);return t})}}]);

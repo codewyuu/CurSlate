@@ -1,0 +1,1 @@
+"use strict";(self.webpackChunk=self.webpackChunk||[]).push([[9240],{89219:(e,s,r)=>{const p=r(88310).PassThrough,t=r(65022);e.exports=e=>{if(!e||!e.pipe)throw new TypeError("Parameter `response` must be a response stream.");const s=new p;return t(e,s),e.pipe(s)}}}]);

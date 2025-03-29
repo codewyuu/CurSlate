@@ -1,0 +1,1 @@
+"use strict";(self.webpackChunk=self.webpackChunk||[]).push([[7833],{99721:(e,t,n)=>{var r=n(36556),u=n(14035),p=r("RegExp.prototype.exec"),s=n(69675);e.exports=function(e){if(!u(e))throw new s("`regex` must be a RegExp");return function(t){return null!==p(e,t)}}}}]);

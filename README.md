@@ -21,9 +21,9 @@ CurSlate is a high-performance Chrome extension that delivers instant text trans
 
 # Installation
 
-1. Download the extension from the Chrome Web Store
+1. Download the extension from the Chrome Web Store (not available for now)
 2. Click the CurSlate icon to activate
-3. Hover over text to translate instantly
+3. Hover over text to translate instantly (still being fixes)
 
 # Supported Languages
 

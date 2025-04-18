@@ -14,7 +14,7 @@
     "contextMenus"
   ],
   "host_permissions": [
-    "https://translation.googleapis.com/*"
+    "https://api.arml.com/*"
   ],
   "background": {
     "service_worker": "background.js"

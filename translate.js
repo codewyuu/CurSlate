@@ -1,35 +1,22 @@
-// Language codes mapping for special cases
-const LANGUAGE_CODES = {
-  'zh-CN': 'zh',
-  'zh-TW': 'zh-TW',
-  'auto': 'auto'
-};
+// ARML Translation Service Implementation
 
-// Cache for storing recent translations
-const translationCache = new Map();
-const CACHE_EXPIRY = 30 * 60 * 1000; // 30 minutes
-
-// Maximum text length for translation
 const MAX_TEXT_LENGTH = 5000;
+const CACHE_EXPIRY = 1800000; // 30 minutes in milliseconds
 
-// Google Translate API endpoint
-const TRANSLATE_API_URL = 'https://translation.googleapis.com/language/translate/v2';
+// Cache for storing translations
+const translationCache = new Map();
 
-/**
- * Normalizes language code to be compatible with the translation API
- * @param {string} langCode - The language code to normalize
- * @returns {string} - Normalized language code
- */
-function normalizeLanguageCode(langCode) {
-  return LANGUAGE_CODES[langCode] || langCode;
+// Normalize language codes to ARML format
+function normalizeLanguageCode(code) {
+  const languageMap = {
+    'zh-CN': 'zh',
+    'zh-TW': 'zh-TW',
+    'auto': 'auto'
+  };
+  return languageMap[code] || code;
 }
 
-/**
- * Validates the input text and options for translation
- * @param {string} text - Text to translate
- * @param {Object} options - Translation options
- * @throws {Error} - If validation fails
- */
+// Validate input parameters
 function validateInput(text, options) {
   if (!text || typeof text !== 'string') {
     throw new Error('Invalid text input: Text must be a non-empty string');
@@ -48,48 +35,29 @@ function validateInput(text, options) {
   }
 }
 
-/**
- * Generates a cache key for the translation
- * @param {string} text - Text to translate
- * @param {Object} options - Translation options
- * @returns {string} - Cache key
- */
-function generateCacheKey(text, options) {
+// Generate cache key
+function getCacheKey(text, options) {
   const from = options.from || 'auto';
   const to = options.to;
   return `${from}:${to}:${text}`;
 }
 
-/**
- * Checks if a cached translation is still valid
- * @param {Object} cachedResult - Cached translation result
- * @returns {boolean} - Whether the cache is valid
- */
-function isCacheValid(cachedResult) {
-  if (!cachedResult) return false;
-  return Date.now() - cachedResult.timestamp < CACHE_EXPIRY;
+// Check if cache entry is valid
+function isCacheValid(entry) {
+  return entry && (Date.now() - entry.timestamp) < CACHE_EXPIRY;
 }
 
-/**
- * Gets language name from ISO code
- * @param {string} langCode - ISO language code
- * @returns {string} - Language name
- */
-function getLanguageName(langCode) {
+// Get language name
+function getLanguageName(code) {
   try {
-    return ISO6391.getName(langCode) || langCode;
+    return ISO6391.getName(code) || code;
   } catch (error) {
-    return langCode;
+    return code;
   }
 }
 
-/**
- * Handles translation errors
- * @param {Error} error - The error object
- * @param {string} text - Original text
- * @returns {Error} - Enhanced error object
- */
-function handleTranslationError(error, text) {
+// Handle translation errors
+function handleError(error, text) {
   const errorMessage = error.message || 'Unknown error occurred';
   console.error('Translation error:', {
     error: errorMessage,
@@ -99,55 +67,45 @@ function handleTranslationError(error, text) {
 
   if (error.code === 'BAD_NETWORK') {
     return new Error('Network error: Please check your internet connection');
-  }
-  if (error.code === 'BAD_REQUEST') {
+  } else if (error.code === 'BAD_REQUEST') {
     return new Error('Invalid request: Please check your input');
-  }
-  if (error.code === 'RATE_LIMIT') {
+  } else if (error.code === 'RATE_LIMIT') {
     return new Error('Rate limit exceeded: Please try again later');
   }
 
   return new Error(`Translation failed: ${errorMessage}`);
 }
 
-/**
- * Main translation function
- * @param {string} text - Text to translate
- * @param {Object} options - Translation options
- * @returns {Promise<Object>} - Translation result
- */
+// Main translation function
 async function translateText(text, options = {}) {
   try {
-    // Input validation
     validateInput(text, options);
 
-    // Normalize language codes
     const normalizedOptions = {
       ...options,
       from: normalizeLanguageCode(options.from || 'auto'),
       to: normalizeLanguageCode(options.to)
     };
 
-    // Check cache
-    const cacheKey = generateCacheKey(text, normalizedOptions);
+    const cacheKey = getCacheKey(text, normalizedOptions);
     const cachedResult = translationCache.get(cacheKey);
+
     if (isCacheValid(cachedResult)) {
       return cachedResult.result;
     }
 
-    // Prepare API request
-    const params = new URLSearchParams({
-      q: text,
-      target: normalizedOptions.to,
-      source: normalizedOptions.from !== 'auto' ? normalizedOptions.from : undefined
-    });
-
-    // Make API request
-    const response = await fetch(`${TRANSLATE_API_URL}?${params.toString()}`, {
-      method: 'GET',
+    // Custom ARML client implementation
+    const response = await fetch('https://api.arml.trymagic.xyz/translate', {
+      method: 'POST',
       headers: {
-        'Content-Type': 'application/json'
-      }
+        'Content-Type': 'application/json',
+        'Accept': 'application/json'
+      },
+      body: JSON.stringify({
+        text,
+        from: normalizedOptions.from === 'auto' ? 'auto' : normalizedOptions.from,
+        to: normalizedOptions.to
+      })
     });
 
     if (!response.ok) {
@@ -155,31 +113,29 @@ async function translateText(text, options = {}) {
     }
 
     const data = await response.json();
-
-    // Process result
-    const translationResult = {
-      translatedText: data.data.translations[0].translatedText,
-      detectedSourceLanguage: data.data.translations[0].detectedSourceLanguage || normalizedOptions.from,
-      sourceLanguageName: getLanguageName(data.data.translations[0].detectedSourceLanguage || normalizedOptions.from),
+    
+    const result = {
+      translatedText: data.translation,
+      detectedSourceLanguage: data.detected_language || normalizedOptions.from,
+      sourceLanguageName: getLanguageName(data.detected_language || normalizedOptions.from),
       targetLanguageName: getLanguageName(normalizedOptions.to),
-      confidence: 1,
-      alternativeTranslations: [],
+      confidence: data.confidence || 1,
+      alternativeTranslations: data.alternatives || [],
       originalText: text
     };
 
-    // Cache result
     translationCache.set(cacheKey, {
-      result: translationResult,
+      result,
       timestamp: Date.now()
     });
 
-    return translationResult;
+    return result;
+
   } catch (error) {
-    throw handleTranslationError(error, text);
+    throw handleError(error, text);
   }
 }
 
-// Export functions
 module.exports = {
   translateText,
   normalizeLanguageCode,

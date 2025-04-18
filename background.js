@@ -188,7 +188,8 @@ chrome.action.onClicked.addListener(() => {
   });
 });
 
-const translateText = require('./translate');
+// Import ARML translation service
+const { translateText } = require('./translate');
 
 // Translation handler function with rate limiting and improved error handling
 let lastTranslationTime = 0;
@@ -198,6 +199,9 @@ async function handleTranslation(text, sourceLanguage, targetLanguage) {
   if (!text || text.trim() === '') {
     return { error: 'No text to translate' };
   }
+  
+  // Placeholder for new translation service implementation
+  return { error: 'Translation service not implemented yet' };
 
   // Rate limiting
   const now = Date.now();

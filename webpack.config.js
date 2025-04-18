@@ -44,7 +44,7 @@ module.exports = {
     options: './options.js',
     content: './content.js',
     background: './background.js',
-    translate: './translate.js'
+
   },
   experiments: {
     topLevelAwait: true
@@ -79,14 +79,6 @@ module.exports = {
   },
   resolve: {
     extensions: ['.js'],
-    alias: {
-      '@vitalets/google-translate-token': path.resolve(__dirname, 'node_modules/@vitalets/google-translate-token/index.js'),
-      'got': path.resolve(__dirname, 'node_modules/got/dist/source'),
-      'worker_threads': false,
-      'express': false,
-      'keyv': false,
-      'write-file-atomic': false
-    },
     fallback: {
       http: require.resolve('stream-http'),
       https: require.resolve('https-browserify'),
@@ -110,6 +102,12 @@ module.exports = {
       'dns': false
     }
   },
+  plugins: [
+    new webpack.ProvidePlugin({
+      process: 'process/browser',
+      Buffer: ['buffer', 'Buffer']
+    })
+  ],
   plugins: [
     new webpack.ProvidePlugin({
       process: 'process/browser',

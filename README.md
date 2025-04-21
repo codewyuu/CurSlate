@@ -59,5 +59,4 @@ CurSlate is a high-performance Chrome extension that delivers instant text trans
 We welcome contributions! Please feel free to submit a Pull Request.
 
 # License
-
-MIT License - feel free to use and modify as needed.
+cc yuvraj 2025 - feel free to use and modify as needed.
